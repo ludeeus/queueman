@@ -1,0 +1,9 @@
+[run]
+source = taskfactory
+
+omit =
+    # omit tests
+    tests/*
+
+    # omit examples
+    example.py
