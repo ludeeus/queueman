@@ -7,3 +7,6 @@ omit =
 
     # omit examples
     example.py
+
+    # omit setup
+    setup.py
