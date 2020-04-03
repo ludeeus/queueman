@@ -1,16 +1,16 @@
-"""TaskFactory::factory"""
+"""QueueManager::factory"""
 
 import logging
 import asyncio
 
-from taskfactory.exceptions import (
-    TaskFactoryExecutionStillInProgress,
-    TaskFactoryEmptyQueue,
+from queueman.exceptions import (
+    QueueManagerExecutionStillInProgress,
+    QueueManagerEmptyQueue,
 )
 
 
-class TaskFactory:
-    """The TaskFactory class."""
+class QueueManager:
+    """The QueueManager class."""
 
     logger = logging.getLogger(__name__)
 
@@ -34,10 +34,10 @@ class TaskFactory:
         """Execute the tasks in the queue."""
         if self.running:
             print("Execution is allreay running")
-            raise TaskFactoryExecutionStillInProgress
+            raise QueueManagerExecutionStillInProgress
         if len(self.queue) == 0:
             print("The queue is empty")
-            raise TaskFactoryEmptyQueue
+            raise QueueManagerEmptyQueue
 
         self.running = True
 

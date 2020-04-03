@@ -1,7 +1,7 @@
 """Example using taskfactory."""
 import asyncio
-from taskfactory.factory import TaskFactory
-from taskfactory.decorator import concurrent
+from queueman.factory import QueueManager
+from queueman.decorator import concurrent
 
 
 @concurrent(2, 1)
@@ -13,7 +13,7 @@ async def exampletask(number):
 
 async def example():
     """Run the example."""
-    factory = TaskFactory()
+    factory = QueueManager()
     for number in range(1, 10):
         factory.add(exampletask(number))
 

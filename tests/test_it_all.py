@@ -1,9 +1,9 @@
 """Test everything."""
 import pytest
-from taskfactory import (
-    TaskFactory,
-    TaskFactoryEmptyQueue,
-    TaskFactoryExecutionStillInProgress,
+from queueman import (
+    QueueManager,
+    QueueManagerEmptyQueue,
+    QueueManagerExecutionStillInProgress,
     concurrent,
 )
 
@@ -21,25 +21,25 @@ def dummy_sync_task():
 @pytest.mark.asyncio
 async def test_everything():
     """Test everything."""
-    factory = TaskFactory()
-    assert not factory.running
-    assert factory.pending_tasks == 0
+    queue = QueueManager()
+    assert not queue.running
+    assert queue.pending_tasks == 0
 
-    factory.add(dummy_task())
-    assert factory.pending_tasks != 0
-    factory.clear()
-    assert factory.pending_tasks == 0
+    queue.add(dummy_task())
+    assert queue.pending_tasks != 0
+    queue.clear()
+    assert queue.pending_tasks == 0
 
-    with pytest.raises(TaskFactoryEmptyQueue):
-        await factory.execute()
+    with pytest.raises(QueueManagerEmptyQueue):
+        await queue.execute()
 
-    factory.running = True
-    with pytest.raises(TaskFactoryExecutionStillInProgress):
-        await factory.execute()
+    queue.running = True
+    with pytest.raises(QueueManagerExecutionStillInProgress):
+        await queue.execute()
 
     dummy_sync_task()
-    factory.running = False
-    factory.add(dummy_task())
-    factory.add(dummy_task())
-    await factory.execute(1)
-    await factory.execute()
+    queue.running = False
+    queue.add(dummy_task())
+    queue.add(dummy_task())
+    await queue.execute(1)
+    await queue.execute()

@@ -1,4 +1,4 @@
-"""TaskFactory::helper."""
+"""QueueManager::helper."""
 import asyncio
 
 

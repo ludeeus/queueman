@@ -1,7 +1,7 @@
-"""TaskFactory::decorator."""
+"""QueueManager::decorator."""
 import asyncio
 from functools import wraps
-from taskfactory.helper import iscoroutine
+from queueman.helper import iscoroutine
 
 
 def concurrent(concurrenttasks=15, sleepafter=0):

@@ -1,5 +1,5 @@
 [run]
-source = taskfactory
+source = queueman
 
 omit =
     # omit tests
