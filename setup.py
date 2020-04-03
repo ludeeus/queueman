@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     LONG = fh.read()
 setuptools.setup(
     name="queueman",
-    version="0.1",
+    version="0.2",
     author="Joakim Sorensen",
     author_email="hi@ludeeus.dev",
     description="",
