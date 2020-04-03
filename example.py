@@ -1,8 +1,10 @@
 """Example using taskfactory."""
 import asyncio
 from taskfactory.factory import TaskFactory
+from taskfactory.decorator import concurrent
 
 
+@concurrent(2, 1)
 async def exampletask(number):
     """Example task to run."""
     await asyncio.sleep(1)
@@ -12,11 +14,11 @@ async def exampletask(number):
 async def example():
     """Run the example."""
     factory = TaskFactory()
-    for number in range(1, 20):
+    for number in range(1, 10):
         factory.add(exampletask(number))
 
     while factory.pending_tasks != 0:
-        await factory.execute(5)
+        await factory.execute(10)
 
 
 LOOP = asyncio.get_event_loop()

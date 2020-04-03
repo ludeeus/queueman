@@ -4,10 +4,17 @@ from taskfactory import (
     TaskFactory,
     TaskFactoryEmptyQueue,
     TaskFactoryExecutionStillInProgress,
+    concurrent,
 )
 
 
+@concurrent(10)
 async def dummy_task():
+    """Dummy task."""
+
+
+@concurrent(10)
+def dummy_sync_task():
     """Dummy task."""
 
 
@@ -30,6 +37,7 @@ async def test_everything():
     with pytest.raises(TaskFactoryExecutionStillInProgress):
         await factory.execute()
 
+    dummy_sync_task()
     factory.running = False
     factory.add(dummy_task())
     factory.add(dummy_task())
