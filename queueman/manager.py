@@ -3,10 +3,7 @@
 import logging
 import asyncio
 
-from queueman.exceptions import (
-    QueueManagerExecutionStillInProgress,
-    QueueManagerEmptyQueue,
-)
+from queueman.exceptions import QueueManagerExecutionStillInProgress
 
 
 class QueueManager:
@@ -22,6 +19,11 @@ class QueueManager:
         """Return a count of pending tasks in the queue."""
         return len(self.queue)
 
+    @property
+    def has_pending_tasks(self):
+        """Return a count of pending tasks in the queue."""
+        return self.pending_tasks != 0
+
     def clear(self):
         """Clear the queue."""
         self.queue = []
@@ -33,15 +35,15 @@ class QueueManager:
     async def execute(self, number_of_tasks=None):
         """Execute the tasks in the queue."""
         if self.running:
-            print("Execution is allreay running")
+            self.logger.debug("Execution is allreay running")
             raise QueueManagerExecutionStillInProgress
         if len(self.queue) == 0:
-            print("The queue is empty")
-            raise QueueManagerEmptyQueue
+            self.logger.debug("The queue is empty")
+            return
 
         self.running = True
 
-        print("Checking out tasks to execute")
+        self.logger.debug("Checking out tasks to execute")
         local_queue = []
 
         if number_of_tasks:
@@ -54,8 +56,8 @@ class QueueManager:
         for task in local_queue:
             self.queue.remove(task)
 
-        print("Starting queue execution")
+        self.logger.debug("Starting queue execution")
         await asyncio.gather(*local_queue)
 
-        print("Queue execution finished")
+        self.logger.debug("Queue execution finished")
         self.running = False

@@ -2,7 +2,6 @@
 import pytest
 from queueman import (
     QueueManager,
-    QueueManagerEmptyQueue,
     QueueManagerExecutionStillInProgress,
     concurrent,
 )
@@ -22,23 +21,23 @@ def dummy_sync_task():
 async def test_everything():
     """Test everything."""
     queue = QueueManager()
+    await queue.execute()
     assert not queue.running
-    assert queue.pending_tasks == 0
+    assert not queue.has_pending_tasks
 
     queue.add(dummy_task())
-    assert queue.pending_tasks != 0
+    assert queue.has_pending_tasks
     queue.clear()
-    assert queue.pending_tasks == 0
-
-    with pytest.raises(QueueManagerEmptyQueue):
-        await queue.execute()
+    assert not queue.has_pending_tasks
 
     queue.running = True
+
     with pytest.raises(QueueManagerExecutionStillInProgress):
         await queue.execute()
+    queue.running = False
 
     dummy_sync_task()
-    queue.running = False
+
     queue.add(dummy_task())
     queue.add(dummy_task())
     await queue.execute(1)
