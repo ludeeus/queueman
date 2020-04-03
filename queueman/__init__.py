@@ -1,5 +1,5 @@
 """Initalize QueueManager."""
-from queueman.factory import QueueManager
+from queueman.manager import QueueManager
 from queueman.exceptions import (
     QueueManagerBaseException,
     QueueManagerEmptyQueue,
