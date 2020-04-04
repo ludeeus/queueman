@@ -1,6 +1,8 @@
 """QueueManager::factory"""
 
 import logging
+import time
+from datetime import timedelta
 import asyncio
 
 from queueman.exceptions import QueueManagerExecutionStillInProgress
@@ -56,8 +58,14 @@ class QueueManager:
         for task in local_queue:
             self.queue.remove(task)
 
-        self.logger.debug("Starting queue execution")
+        self.logger.debug("Starting queue execution for %s tasks", len(local_queue))
+        start = time.time()
         await asyncio.gather(*local_queue)
+        end = time.time() - start
 
-        self.logger.debug("Queue execution finished")
+        self.logger.debug(
+            "Queue execution finished for %s tasks finished in %.2f seconds",
+            len(local_queue),
+            end,
+        )
         self.running = False
